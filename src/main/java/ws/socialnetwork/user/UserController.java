@@ -14,6 +14,7 @@ import ws.socialnetwork.shared.GenericResponse;
 public class UserController {
  private static final Logger log= LoggerFactory.getLogger(UserController.class);
 
+ @Autowired
  UserService userService;
 
  @PostMapping("/api/1.0/users")
