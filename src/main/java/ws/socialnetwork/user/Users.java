@@ -17,6 +17,6 @@ public class Users {
     private String username;
     @Column(name="`PASSWORD`")
     private String password;
-    @Column(name="`EMAIL`")
-    private String email;
+    @Column(name="`DISPLAY_NAME`")
+    private String displayName;
 }
