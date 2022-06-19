@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ws.socialnetwork.error.ApiError;
 import ws.socialnetwork.shared.GenericResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class UserController {
  private static final Logger log= LoggerFactory.getLogger(UserController.class);
@@ -25,7 +28,10 @@ public class UserController {
 
      String username = user.getUsername();
      if(username == null || username.isEmpty()) {
-         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error.Username is required", "/api/1.0/users");
+         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
+         Map<String,String> validationErrors = new HashMap<>();
+         validationErrors.put("username", "Username is required");
+         error.setValidationErrors(validationErrors);
          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
      }
 
