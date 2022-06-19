@@ -25,22 +25,23 @@ public class UserController {
  @PostMapping("/api/1.0/users")
  @ResponseStatus(HttpStatus.CREATED)
  public ResponseEntity<?> create(@RequestBody Users user) {
+     ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
+     Map<String,String> validationErrors = new HashMap<>();
+
 
      String username = user.getUsername();
-     if(username == null || username.isEmpty()) {
-         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
-         Map<String,String> validationErrors = new HashMap<>();
-         validationErrors.put("username", "Username is required");
-         error.setValidationErrors(validationErrors);
-         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-     }
      String displayName = user.getDisplayName();
+
+     if(username == null || username.isEmpty()) {
+         validationErrors.put("username", "Username is required");
+     }
      if(displayName == null || displayName.isEmpty()) {
-         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
-         Map<String,String> validationErrors = new HashMap<>();
          validationErrors.put("displayName", "Display Name is required");
+     }
+
+     if(!validationErrors.isEmpty()) {
          error.setValidationErrors(validationErrors);
-         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
      }
 
      userService.save(user);
