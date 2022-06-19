@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 import java.util.Map;
 
-
+@Data
 public class ApiError {
     private String message;
     private String path;
