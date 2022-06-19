@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ws.socialnetwork.error.ApiError;
 import ws.socialnetwork.shared.GenericResponse;
 
 @RestController
@@ -24,7 +25,8 @@ public class UserController {
 
      String username = user.getUsername();
      if(username == null || username.isEmpty()) {
-         return new ResponseEntity<>(new GenericResponse("Username is required"), HttpStatus.BAD_REQUEST);
+         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error.Username is required", "/api/1.0/users");
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
      }
 
     userService.save(user);
