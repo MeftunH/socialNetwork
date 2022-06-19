@@ -34,8 +34,16 @@ public class UserController {
          error.setValidationErrors(validationErrors);
          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
      }
+     String displayName = user.getDisplayName();
+     if(displayName == null || displayName.isEmpty()) {
+         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
+         Map<String,String> validationErrors = new HashMap<>();
+         validationErrors.put("displayName", "Display Name is required");
+         error.setValidationErrors(validationErrors);
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+     }
 
-    userService.save(user);
+     userService.save(user);
     return ResponseEntity.ok(new GenericResponse("User created successfully"));
  }
 }
