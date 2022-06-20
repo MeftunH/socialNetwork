@@ -20,6 +20,7 @@ public class Users {
     @Column(name="`USERNAME`")
     @NotNull
     @Size(min = 3, max = 20)
+    @UniqueUsername
     private String username;
 
     @NotNull
