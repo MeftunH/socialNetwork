@@ -5,10 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 import ws.socialnetwork.error.ApiError;
 import ws.socialnetwork.shared.GenericResponse;
 
@@ -25,27 +23,17 @@ public class UserController {
 
  @PostMapping("/api/1.0/users")
  @ResponseStatus(HttpStatus.CREATED)
- public ResponseEntity<?> create(@Valid @RequestBody Users user) {
+ public GenericResponse create(@Valid @RequestBody Users user) {
+     userService.save(user);
+    return new GenericResponse("User created successfully");
+ }
+ @ExceptionHandler(MethodArgumentNotValidException.class)
+ @ResponseStatus(HttpStatus.BAD_REQUEST)
+ public ApiError handleValidationException(MethodArgumentNotValidException exception){
      ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
      Map<String,String> validationErrors = new HashMap<>();
-
-
-     String username = user.getUsername();
-     String displayName = user.getDisplayName();
-
-     if(username == null || username.isEmpty()) {
-         validationErrors.put("username", "Username is required");
-     }
-     if(displayName == null || displayName.isEmpty()) {
-         validationErrors.put("displayName", "Display Name is required");
-     }
-
-     if(!validationErrors.isEmpty()) {
-         error.setValidationErrors(validationErrors);
-         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-     }
-
-     userService.save(user);
-    return ResponseEntity.ok(new GenericResponse("User created successfully"));
+     exception.getBindingResult().getFieldErrors().forEach(fieldError -> validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage()));
+     error.setValidationErrors(validationErrors);
+     return error;
  }
 }
