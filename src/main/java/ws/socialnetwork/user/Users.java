@@ -15,12 +15,16 @@ public class Users {
     @Id
     @GeneratedValue
     private long id;
+
     @Column(name="`USERNAME`")
     @NotNull
     @Size(min = 3, max = 20)
     private String username;
+
+    @NotNull
     @Column(name="`PASSWORD`")
     private String password;
+
     @NotNull
     @Size(min = 3, max = 20)
     @Column(name="`DISPLAY_NAME`")
