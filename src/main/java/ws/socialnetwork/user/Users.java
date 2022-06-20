@@ -26,7 +26,7 @@ public class Users {
     @NotNull(message = "{app.constraint.user.password.notNull.Message}")
     @Column(name="`PASSWORD`")
     @Size(min = 6, max = 80)
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$", message = "Password must contain at least 6 characters, including UPPER/lowercase, numbers and special characters.")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$", message = "{app.constraint.user.password.pattern.Message}")
     private String password;
 
     @NotNull(message = "{app.constraint.user.displayName.notNull.Message}")
