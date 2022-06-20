@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -23,6 +24,8 @@ public class Users {
 
     @NotNull
     @Column(name="`PASSWORD`")
+    @Size(min = 6, max = 80)
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$", message = "Password must contain at least 6 characters, including UPPER/lowercase, numbers and special characters.")
     private String password;
 
     @NotNull
