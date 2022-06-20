@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ws.socialnetwork.error.ApiError;
 import ws.socialnetwork.shared.GenericResponse;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class UserController {
 
  @PostMapping("/api/1.0/users")
  @ResponseStatus(HttpStatus.CREATED)
- public ResponseEntity<?> create(@RequestBody Users user) {
+ public ResponseEntity<?> create(@Valid @RequestBody Users user) {
      ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
      Map<String,String> validationErrors = new HashMap<>();
 
