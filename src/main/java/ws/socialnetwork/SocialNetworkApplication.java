@@ -11,7 +11,7 @@ import ws.socialnetwork.user.Users;
 
 import java.security.Security;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 public class SocialNetworkApplication {
 
     public static void main(String[] args) {
