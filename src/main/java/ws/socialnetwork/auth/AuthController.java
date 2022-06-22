@@ -20,7 +20,7 @@ public class AuthController {
       ApiError error = new ApiError(401, "Unauthorized request", "/api/1.0/auth");
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
-    log.info("Authorization: " + authorization);
+    String base64Credentials = authorization.split("Basic ")[1];
     return ResponseEntity.ok().build();
     }
 }
