@@ -1,7 +1,9 @@
 package ws.socialnetwork.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +18,8 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    UserAuthService userDetailsService;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -30,5 +34,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 authorizeHttpRequests().antMatchers(HttpMethod.POST,"/api/1.0/auth").authenticated()
                 .and()
                 .authorizeHttpRequests().anyRequest().permitAll();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
+
     }
 }
