@@ -33,4 +33,6 @@ public class Users {
     @Size(min = 3, max = 20)
     @Column(name="`DISPLAY_NAME`")
     private String displayName;
+
+    private String image;
 }
