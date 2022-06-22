@@ -1,5 +1,6 @@
 package ws.socialnetwork.auth;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import ws.socialnetwork.error.ApiError;
+import ws.socialnetwork.shared.Views;
 import ws.socialnetwork.user.UserRepository;
 import ws.socialnetwork.user.Users;
 
@@ -24,6 +26,7 @@ public class AuthController {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @PostMapping("/api/1.0/auth/")
+    @JsonView(Views.BaseView.class)
     ResponseEntity<?> handleAuthentication(@RequestHeader(name = "Authorization",required = false) String authorization) {
     if (authorization == null) {
       ApiError error = new ApiError(401, "Unauthorized request", "/api/1.0/auth");

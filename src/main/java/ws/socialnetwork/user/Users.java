@@ -1,6 +1,8 @@
 package ws.socialnetwork.user;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import ws.socialnetwork.shared.Views;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +23,7 @@ public class Users {
     @NotNull(message = "{app.constraint.user.username.notNull.Message}")
     @Size(min = 3, max = 20)
     @UniqueUsername
+    @JsonView(Views.BaseView.class)
     private String username;
 
     @NotNull(message = "{app.constraint.user.password.notNull.Message}")
@@ -32,7 +35,9 @@ public class Users {
     @NotNull(message = "{app.constraint.user.displayName.notNull.Message}")
     @Size(min = 3, max = 20)
     @Column(name="`DISPLAY_NAME`")
+    @JsonView(Views.BaseView.class)
     private String displayName;
 
+    @JsonView(Views.BaseView.class)
     private String image;
 }
