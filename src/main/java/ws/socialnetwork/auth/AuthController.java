@@ -23,6 +23,10 @@ public class AuthController {
     }
     String base64Credentials = authorization.split("Basic ")[1];
     String decoded = new String(Base64.getDecoder().decode(base64Credentials));
+    String[] parts = decoded.split(":");
+    String username = parts[0];
+    String password = parts[1];
+
     return ResponseEntity.ok().build();
     }
 }
