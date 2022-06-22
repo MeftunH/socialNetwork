@@ -12,9 +12,9 @@ public class UserService{
     PasswordEncoder passwordEncoder;
 
     //if you have only one constructor and this constructor has values, it is not meaningful to use @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void save(Users user) {
