@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import ws.socialnetwork.error.ApiError;
 
+import java.util.Base64;
 import java.util.logging.Logger;
 
 @RestController
@@ -21,6 +22,7 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
     String base64Credentials = authorization.split("Basic ")[1];
+    String decoded = new String(Base64.getDecoder().decode(base64Credentials));
     return ResponseEntity.ok().build();
     }
 }
