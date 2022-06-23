@@ -5,11 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ws.socialnetwork.error.ApiError;
 import ws.socialnetwork.shared.Views;
 import ws.socialnetwork.user.UserRepository;
@@ -50,5 +49,11 @@ public class AuthController {
     }
 
     return ResponseEntity.ok().build();
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    ApiError handleBadCredentials(BadCredentialsException e) {
+        ApiError error = new ApiError(401, "Username or Password is not valid", "/api/1.0/auth");
+        return error;
     }
 }
