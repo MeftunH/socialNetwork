@@ -27,13 +27,5 @@ public class UserController {
      userService.save(user);
     return new GenericResponse("User created successfully");
  }
- @ExceptionHandler(MethodArgumentNotValidException.class)
- @ResponseStatus(HttpStatus.BAD_REQUEST)
- public ApiError handleValidationException(MethodArgumentNotValidException exception){
-     ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Error", "/api/1.0/users");
-     Map<String,String> validationErrors = new HashMap<>();
-     exception.getBindingResult().getFieldErrors().forEach(fieldError -> validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage()));
-     error.setValidationErrors(validationErrors);
-     return error;
- }
+
 }

@@ -1,6 +1,8 @@
 package ws.socialnetwork.error;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.error.ErrorAttributeOptions.Include;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +19,12 @@ public class ErrorHandler implements ErrorController {
 
     @RequestMapping("/error")
     ApiError handleError(WebRequest webRequest) {
-        Map<String, Object> attributes = this.errorAttributes.getErrorAttributes(webRequest, true);
-        String message = attributes.get("message").toString();
-        String path = attributes.get("path").toString();
+        Map<String, Object> attributes = errorAttributes.getErrorAttributes(webRequest, ErrorAttributeOptions.of(Include.MESSAGE,Include.BINDING_ERRORS));
+
+        String message = (String) attributes.get("message");
+        String url = (String) attributes.get("path");
         int status = (Integer) attributes.get("status");
-        return new ApiError(status, message, path);
+        return new ApiError(status, message, url);
     }
-    public String getErrorPath() {
-        return "/error";
-    }
+
 }
