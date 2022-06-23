@@ -23,37 +23,14 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @PostMapping("/api/1.0/auth")
     @JsonView(Views.BaseView.class)
-    ResponseEntity<?> handleAuthentication(@RequestHeader(name = "Authorization",required = false) String authorization) {
-    if (authorization == null) {
-      ApiError error = new ApiError(401, "Unauthorized request", "/api/1.0/auth");
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
+    ResponseEntity<?> handleAuthentication(@RequestHeader(name = "Authorization") String authorization) {
     String base64Credentials = authorization.split("Basic ")[1];
     String decoded = new String(Base64.getDecoder().decode(base64Credentials));
     String[] parts = decoded.split(":");
     String username = parts[0];
-    String password = parts[1];
     Users inDB = userRepository.findByUsername(username);
-    if (inDB == null) {
-      ApiError error = new ApiError(401, "Username or Password is not valid", "/api/1.0/auth");
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
-    String hashedPassword = inDB.getPassword();
-
-    if(!passwordEncoder.matches(password, hashedPassword)) {
-        ApiError error = new ApiError(401, "Username or Password is not valid", "/api/1.0/auth");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
-
     return ResponseEntity.ok().build();
-    }
-    @ExceptionHandler(BadCredentialsException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    ApiError handleBadCredentials(BadCredentialsException e) {
-        ApiError error = new ApiError(401, "Username or Password is not valid", "/api/1.0/auth");
-        return error;
     }
 }
