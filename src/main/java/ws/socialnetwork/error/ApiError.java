@@ -11,15 +11,15 @@ import java.util.Map;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError {
-    @JsonView(Views.BaseView.class)
-    private String message;
-    @JsonView(Views.BaseView.class)
-    private String path;
-    @JsonView(Views.BaseView.class)
-    private final long timestamp = new Date().getTime();
-    @JsonView(Views.BaseView.class)
+
     private int status;
-    @JsonView(Views.BaseView.class)
+
+    private String message;
+
+    private String path;
+
+    private long timestamp = new Date().getTime();
+
     private Map<String, String> validationErrors;
 
     public ApiError(int status, String message, String path) {
@@ -27,4 +27,5 @@ public class ApiError {
         this.message = message;
         this.path = path;
     }
+
 }
